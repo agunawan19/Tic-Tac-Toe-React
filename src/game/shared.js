@@ -19,3 +19,17 @@ export const calculateWinner = (squares) => {
 
   return null;
 }
+
+export const getCoordinate = (square) => {
+  const coordinates = [];
+  const columnCount = 3;
+  const rowCount = 3;
+
+  for (let row = 1; row <= rowCount; row++) {
+    for (let col = 1; col <= columnCount; col++) {
+        coordinates.push([col, row]);
+    }
+  }
+
+  return coordinates[square];
+};

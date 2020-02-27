@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Board from './board/board';
-import { calculateWinner } from './shared';
+import { calculateWinner, getCoordinate } from './shared';
 
 class Game extends Component {
   token = {
@@ -12,7 +12,8 @@ class Game extends Component {
     super(props);
     this.state = {
       history: [{
-        squares: Array(9).fill(null)
+        squares: Array(9).fill(null),
+        lastSquare: -1
       }],
       stepNumber: 0,
       xIsNext: true,
@@ -28,9 +29,14 @@ class Game extends Component {
       const desc = move ?
         'Go to move #' + move :
         'Go to game start';
+
+        console.log(step);
+        console.log(move);
       return (
-        <li>
+        <li key={move}>
+
           <button onClick={() => this.jumpTo(move)}>{desc}</button>
+          <span>{step.lastSquare > -1 ? ` (${getCoordinate(step.lastSquare).toString()})` : ''}</span>
         </li>
       );
     });
@@ -71,7 +77,8 @@ class Game extends Component {
 
     this.setState({
       history: history.concat([{
-        squares: squares
+        squares: squares,
+        lastSquare: i,
       }]),
       stepNumber: history.length,
       xIsNext: !this.state.xIsNext,
@@ -81,7 +88,7 @@ class Game extends Component {
   jumpTo(step) {
     this.setState({
       stepNumber: step,
-      xIsNext: (step % 2) === 0
+      xIsNext: (step % 2) === 0,
     });
   }
 }
