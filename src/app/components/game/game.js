@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Board from './board/board';
-import { calculateWinner, getCoordinate } from './shared';
 
 class Game extends Component {
   token = {
@@ -23,7 +22,7 @@ class Game extends Component {
   render() {
     const history = this.state.history;
     const current = history[this.state.stepNumber];
-    const winner = calculateWinner(current.squares);
+    const winner = this.calculateWinner(current.squares);
 
     const moves = history.map((step, move) => {
       const desc = move ?
@@ -36,7 +35,7 @@ class Game extends Component {
         <li key={move}>
 
           <button onClick={() => this.jumpTo(move)}>{desc}</button>
-          <span>{step.lastSquare > -1 ? ` (${getCoordinate(step.lastSquare).toString()})` : ''}</span>
+          <span>{step.lastSquare > -1 ? ` (${this.getCoordinate(step.lastSquare).toString()})` : ''}</span>
         </li>
       );
     });
@@ -69,7 +68,7 @@ class Game extends Component {
     const current = history[history.length - 1];
     const squares = current.squares.slice();
 
-    if (calculateWinner(squares) || squares[i]) {
+    if (this.calculateWinner(squares) || squares[i]) {
       return;
     }
 
@@ -91,6 +90,42 @@ class Game extends Component {
       xIsNext: (step % 2) === 0,
     });
   }
+
+  calculateWinner = (squares) => {
+    const lines = [
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+      [0, 3, 6],
+      [1, 4, 7],
+      [2, 5, 8],
+      [0, 4, 8],
+      [2, 4, 6],
+    ];
+
+    for (let i = 0; i < lines.length; i++) {
+      const [a, b, c] = lines[i];
+      if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+        return squares[a];
+      }
+    }
+
+    return null;
+  }
+
+  getCoordinate = (square) => {
+    const coordinates = [];
+    const columnCount = 3;
+    const rowCount = 3;
+
+    for (let row = 1; row <= rowCount; row++) {
+      for (let col = 1; col <= columnCount; col++) {
+          coordinates.push([col, row]);
+      }
+    }
+
+    return coordinates[square];
+  };
 }
 
 export default Game;
