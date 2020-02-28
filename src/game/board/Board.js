@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import Square from './square/square';
 
 class Board extends Component {
-  renderSquare(i) {
+
+  renderSquare = (i) => {
     return (
       <Square
         value={this.props.squares[i]}
@@ -11,24 +12,26 @@ class Board extends Component {
     );
   }
 
+  renderGrid = () => {
+    let board = [];
+
+    for (let i = 0; i < 3; i++ ) {
+      let columns = [];
+
+      for (let j = 0; j < 3; j++) {
+        columns.push(this.renderSquare(i + j + i * 2));
+      }
+
+      board.push(<div className="board-row">{columns}</div>);
+    }
+
+    return board;
+  }
+
   render() {
     return (
       <div>
-        <div className="board-row">
-          {this.renderSquare(0)}
-          {this.renderSquare(1)}
-          {this.renderSquare(2)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(3)}
-          {this.renderSquare(4)}
-          {this.renderSquare(5)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(6)}
-          {this.renderSquare(7)}
-          {this.renderSquare(8)}
-        </div>
+        {this.renderGrid()}
       </div>
     );
   }
