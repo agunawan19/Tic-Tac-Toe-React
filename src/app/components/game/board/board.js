@@ -1,25 +1,24 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import Square from './square/square';
 
-class Board extends Component {
-
-  renderSquare = (i) => {
+function Board (props) {
+  const renderSquare = (i) => {
     return (
       <Square
-        value={this.props.squares[i]}
-        onClick={() => this.props.onClick(i)}
+        value={props.squares[i]}
+        onClick={() => props.onClick(i)}
       />
     );
   }
 
-  renderGrid = () => {
+  const renderGrid = () => {
     let board = [];
 
     for (let i = 0; i < 3; i++ ) {
       let columns = [];
 
       for (let j = 0; j < 3; j++) {
-        columns.push(this.renderSquare(i + j + i * 2));
+        columns.push(renderSquare(i + j + i * 2));
       }
 
       board.push(<div className="board-row">{columns}</div>);
@@ -28,13 +27,12 @@ class Board extends Component {
     return board;
   }
 
-  render() {
-    return (
-      <div>
-        {this.renderGrid()}
-      </div>
-    );
-  }
+
+  return (
+    <div>
+      {renderGrid()}
+    </div>
+  );
 }
 
 export default Board;
